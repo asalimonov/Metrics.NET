@@ -10,15 +10,17 @@ namespace Metrics.Reports
     {
         private readonly MetricsDataProvider metricsDataProvider;
         private readonly Func<HealthStatus> healthStatus;
+        private readonly bool alwaysReturnOkStatusCode;
 
         private readonly Dictionary<string, MetricsEndpoint> endpoints = new Dictionary<string, MetricsEndpoint>();
 
         public IEnumerable<MetricsEndpoint> Endpoints => this.endpoints.Values;
 
-        public MetricsEndpointReports(MetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus)
+        public MetricsEndpointReports(MetricsDataProvider metricsDataProvider, Func<HealthStatus> healthStatus, bool alwaysReturnOkStatusCode = false)
         {
             this.metricsDataProvider = metricsDataProvider;
             this.healthStatus = healthStatus;
+            this.alwaysReturnOkStatusCode = alwaysReturnOkStatusCode;
             RegisterDefaultEndpoints();
         }
 
@@ -39,8 +41,8 @@ namespace Metrics.Reports
         {
             this
                 .WithTextReport("/text")
-                .WithJsonHealthReport("/health")
-                .WithJsonHealthReport("/v1/health")
+                .WithJsonHealthReport("/health", this.alwaysReturnOkStatusCode)
+                .WithJsonHealthReport("/v1/health", this.alwaysReturnOkStatusCode)
                 .WithJsonV1Report("/v1/json")
                 .WithJsonV2Report("/v2/json")
                 .WithJsonReport("/json")

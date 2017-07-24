@@ -66,7 +66,7 @@ namespace Metrics
         /// GET /text => metrics in human readable text format
         /// </summary>
         /// <param name="httpUriPrefix">prefix where to start HTTP endpoint</param>
-        /// <param name="filter">Only report metrics that match the filter.</param> 
+        /// <param name="filter">Only report metrics that match the filter.</param>
         /// <param name="maxRetries">maximum number of attempts to start the http listener. Note the retry time between attempts is dependent on this value</param>
         /// <returns>Chain-able configuration object.</returns>
         public MetricsConfig WithHttpEndpoint(string httpUriPrefix, MetricsFilter filter = null, int maxRetries = 3)
@@ -87,10 +87,11 @@ namespace Metrics
         /// </summary>
         /// <param name="httpUriPrefix">prefix where to start HTTP endpoint</param>
         /// <param name="reportsConfig">Endpoint reports configuration</param>
-        /// <param name="filter">Only report metrics that match the filter.</param> 
+        /// <param name="filter">Only report metrics that match the filter.</param>
         /// <param name="maxRetries">maximum number of attempts to start the http listener. Note the retry time between attempts is dependent on this value</param>
+        /// <param name="alwaysReturnOkStatusCode">Returns OK HTTP response code if it is unhealthy</param>
         /// <returns>Chain-able configuration object.</returns>
-        public MetricsConfig WithHttpEndpoint(string httpUriPrefix, Action<MetricsEndpointReports> reportsConfig, MetricsFilter filter = null, int maxRetries = 3)
+        public MetricsConfig WithHttpEndpoint(string httpUriPrefix, Action<MetricsEndpointReports> reportsConfig, MetricsFilter filter = null, int maxRetries = 3, bool alwaysReturnOkStatusCode = false)
         {
             if (this.isDisabled)
             {
@@ -102,7 +103,7 @@ namespace Metrics
                 throw new InvalidOperationException($"Http URI prefix {httpUriPrefix} already configured.");
             }
 
-            var endpointReports = new MetricsEndpointReports(this.context.DataProvider.WithFilter(filter), this.healthStatus);
+            var endpointReports = new MetricsEndpointReports(this.context.DataProvider.WithFilter(filter), this.healthStatus, alwaysReturnOkStatusCode);
             reportsConfig(endpointReports);
 
             var endpoint = MetricsHttpListener.StartHttpListenerAsync(httpUriPrefix, endpointReports.Endpoints, this.httpEndpointCancellation.Token, maxRetries);
