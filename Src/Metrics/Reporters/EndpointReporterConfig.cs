@@ -28,7 +28,7 @@ namespace Metrics.Reporters
             var httpStatus = status.IsHealthy || alwaysReturnOkStatusCode ? 200 : 500;
             var httpStatusDescription = status.IsHealthy || alwaysReturnOkStatusCode ? "OK" : "Internal Server Error";
 
-            return new MetricsEndpointResponse(json, JsonHealthChecks.HealthChecksMimeType, Encoding.UTF8, httpStatus, httpStatusDescription);
+            return new MetricsEndpointResponse(json, JsonHealthChecks.HealthChecksMimeType, Metric.CurrentEncoding, httpStatus, httpStatusDescription);
         }
 
         public static MetricsEndpointReports WithJsonV1Report(this MetricsEndpointReports reports, string endpoint)

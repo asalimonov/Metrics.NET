@@ -211,7 +211,7 @@ namespace Metrics.Endpoints
             context.Response.StatusCode = httpStatus;
             context.Response.StatusDescription = httpStatusDescription;
 
-            var textEncoding = encoding ?? Encoding.UTF8;
+            var textEncoding = encoding ?? Metric.CurrentEncoding;
 
             var acceptsGzip = AcceptsGzip(context.Request);
             if (!acceptsGzip)

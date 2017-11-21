@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Metrics;
 using Metrics.Endpoints;
 using Metrics.Reports;
 
@@ -76,7 +77,7 @@ namespace Owin.Metrics.Middleware
             var response = environment["owin.ResponseBody"] as Stream;
             var headers = environment["owin.ResponseHeaders"] as IDictionary<string, string[]>;
 
-            var contentBytes = Encoding.UTF8.GetBytes(content);
+            var contentBytes = Metric.CurrentEncoding.GetBytes(content);
 
             headers["Content-Type"] = new[] { contentType };
             headers["Cache-Control"] = new[] { "no-cache, no-store, must-revalidate" };

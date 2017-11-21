@@ -12,7 +12,7 @@ namespace Metrics.Endpoints
         public readonly string StatusCodeDescription;
 
         public MetricsEndpointResponse(string content, string contentType)
-            : this(content, contentType, Encoding.UTF8) { }
+            : this(content, contentType, Metric.CurrentEncoding) { }
 
         public MetricsEndpointResponse(string content, string contentType, Encoding encoding, int statusCode = 200, string statusCodeDescription = "OK")
         {

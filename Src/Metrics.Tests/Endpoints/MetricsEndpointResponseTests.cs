@@ -14,7 +14,7 @@ namespace Metrics.Tests.Endpoints
             var response = new MetricsEndpointResponse("content", "content-type");
             response.Content.Should().Be("content");
             response.ContentType.Should().Be("content-type");
-            response.Encoding.Should().Be(Encoding.UTF8);
+            response.Encoding.Should().Be(Metric.CurrentEncoding);
             response.StatusCode.Should().Be(200);
             response.StatusCodeDescription.Should().Be("OK");
 
